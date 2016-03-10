@@ -19,8 +19,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import com.ovencontroller.model.ProgramModel;
 import com.ovencontroller.model.ProgramSettings;
+import com.ovencontroller.utils.InputReader;
 
 /**
  * @author darshanbidkar
@@ -29,7 +29,7 @@ import com.ovencontroller.model.ProgramSettings;
 public class ProgramSelectionScreen extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private ProgramSettings settings;
+	private ArrayList<ProgramSettings> settings;
 	JLabel lblProgramSelection;
 	JScrollPane scrollPane;
 
@@ -67,35 +67,32 @@ public class ProgramSelectionScreen extends JFrame {
 		getContentPane().add(btnStart);
 
 		settings = getPrograms();
+		setRadioButtons();
 
 		setVisible(true);
 	}
 
-	private ProgramSettings getPrograms() {
-		ArrayList<ProgramModel> models = new ArrayList<ProgramModel>();
-
-		// File read code.
-
-		ProgramSettings settings = new ProgramSettings(models);
-		setRadioButtons(settings);
+	private ArrayList<ProgramSettings> getPrograms() {
+		ArrayList<ProgramSettings> settings = InputReader.getSavedSettings();
 		return settings;
 	}
 
-	private void setRadioButtons(ProgramSettings settings) {
+	private void setRadioButtons() {
 		ButtonGroup radioGroup = new ButtonGroup();
 		JRadioButton radioButton;
 		JPanel jp = new JPanel();
 		BoxLayout boxLayout = new BoxLayout(jp, BoxLayout.Y_AXIS);
 		jp.setLayout(boxLayout);
 		// TODO change code.
-		for (int i = 0; i < 50; i++) {
-			radioButton = new JRadioButton();
-			radioButton.setText("Name, 10:00");
-			radioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
-			radioGroup.add(radioButton);
+		for(ProgramSettings setting : settings) {
+		    radioButton = new JRadioButton();
+            radioButton.setText(setting.getName() + ", " + setting.getTotalTime());
+            radioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
+            radioGroup.add(radioButton);
 
-			jp.add(radioButton);
+            jp.add(radioButton);
 		}
+
 		scrollPane = new JScrollPane(jp);
 		scrollPane.setBounds(16, 130, 465, 122);
 		getContentPane().add(scrollPane);

@@ -12,6 +12,15 @@ public class ProgramModel {
 	private int endTemp;
 	private int hours;
 	private int minutes;
+	private long duration;
+
+	public ProgramModel(int startTemp, int endTemp, int duration) {
+		this.startTemp = startTemp;
+		this.endTemp = endTemp;
+		this.duration = duration;
+		this.hours = duration / 60;
+		this.minutes = duration % 60;
+	}
 
 	/**
 	 * @return the startTemp
@@ -72,5 +81,13 @@ public class ProgramModel {
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
 	}
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
 
 }

@@ -7,10 +7,24 @@ public class ProgramSettings {
 	private ArrayList<ProgramModel> models;
 	private String name;
 	private String totalTime;
+	private long duration;
 
-	public ProgramSettings(ArrayList<ProgramModel> models) {
-
+	public ProgramSettings(String name, ArrayList<ProgramModel> models) {
+		this.name = name;
+		this.models = models;
+		calculateTotalTime();
 	}
+
+	/**
+	 * Calculates total time based on setting models
+	 */
+    private void calculateTotalTime() {
+        duration = 0;
+        for (ProgramModel model : models) {
+            duration += model.getDuration();
+        }
+        totalTime = String.format("%02d hrs %02d mins", (duration / 60), (duration % 60));
+    }
 
 	/**
 	 * @return the models
