@@ -74,7 +74,7 @@ public class ProgramSettings {
 	@Override
 	public String toString() {
 	    StringBuilder builder = new StringBuilder();
-	    builder.append("\n").append(name).append("\t");
+	    builder.append(name).append("\t");
 	    for(ProgramModel model : models) {
 	        builder.append(model.getStartTemp())
 	               .append(",")
