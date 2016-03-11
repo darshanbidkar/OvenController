@@ -24,20 +24,6 @@ public class Process {
 	}
 
 	public void startProcess() {
-		// for (int i = 0; i < duration; i++) {
-		// double delta = isCooling ? COOLING_FACTOR : HEATING_FACTOR;
-		// currentTemp += delta;
-		// tempIdeal += idealRate;
-		// if (currentTemp - tempIdeal > 0) {
-		// isCooling = true;
-		// } else if (currentTemp - tempIdeal < 0) {
-		// isCooling = false;
-		// }
-		// String status = isCooling ? "Cooling" : "Heating";
-		// System.out.println("Status : " + status + "\tIdeal : " + tempIdeal
-		// + "\t\tActual : " + currentTemp);
-		//
-		// }
 
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
@@ -75,6 +61,10 @@ public class Process {
 
 	public boolean isCooling() {
 		return isCooling;
+	}
+
+	public int getCurrentTemp() {
+		return (int) currentTemp;
 	}
 
 	public static void main(String[] args) {

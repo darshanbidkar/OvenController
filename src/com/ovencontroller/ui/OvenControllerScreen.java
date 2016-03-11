@@ -6,6 +6,7 @@ package com.ovencontroller.ui;
 import java.awt.Font;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
@@ -24,6 +25,8 @@ public class OvenControllerScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JLabel lblTimeLabel;
 	private JLabel lblStatusLabel;
+	private JLabel lblCurrentTempLabel;
+	private Timer timer;
 
 	public OvenControllerScreen(ProgramSettings settings) {
 		setTitle("Oven Controller Status");
@@ -38,8 +41,13 @@ public class OvenControllerScreen extends JFrame {
 
 		lblStatusLabel = new JLabel("");
 		lblStatusLabel.setFont(new Font("Lucida Grande", Font.BOLD, 18));
-		lblStatusLabel.setBounds(166, 92, 226, 45);
+		lblStatusLabel.setBounds(55, 117, 226, 45);
 		getContentPane().add(lblStatusLabel);
+
+		lblCurrentTempLabel = new JLabel("");
+		lblCurrentTempLabel.setFont(new Font("Lucida Grande", Font.BOLD, 18));
+		lblCurrentTempLabel.setBounds(319, 117, 221, 45);
+		getContentPane().add(lblCurrentTempLabel);
 
 		setVisible(true);
 		for (ProgramModel model : settings.getModels()) {
@@ -77,15 +85,18 @@ public class OvenControllerScreen extends JFrame {
 		Process process = new Process(model.getStartTemp(), model.getEndTemp(),
 				model.getDuration());
 		process.startProcess();
-		Timer timer = new Timer();
+		timer = new Timer();
+		
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				long time;
 				while ((time = process.getTime()) >= 0) {
 					setStatus(process.isCooling());
+					System.out.println("Time: " + getTime(time));
 					lblTimeLabel.setText(getTime(time));
-					lblTimeLabel.revalidate();
+					lblCurrentTempLabel.setText(process.getCurrentTemp()
+							+ "\u00B0" + "F");
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
