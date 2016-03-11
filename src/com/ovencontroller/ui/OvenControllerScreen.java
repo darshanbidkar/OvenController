@@ -26,6 +26,7 @@ public class OvenControllerScreen extends JFrame {
 	private JLabel lblStatusLabel;
 	private JLabel lblCurrentTempLabel;
 	private Timer timer;
+	private volatile boolean isRunning;
 
 	public OvenControllerScreen(ProgramSettings settings) {
 		setTitle("Oven Controller Status");
@@ -49,9 +50,17 @@ public class OvenControllerScreen extends JFrame {
 		getContentPane().add(lblCurrentTempLabel);
 
 		setVisible(true);
-		for (ProgramModel model : settings.getModels()) {
-			startTimer(model);
-		}
+		isRunning = false;
+		new Thread() {
+			public void run() {
+				for (ProgramModel model : settings.getModels()) {
+					isRunning = true;
+					startTimer(model);
+					while (isRunning);
+				}
+				lblStatusLabel.setText("<html><font color='green'>Finished</font></html>");
+			}
+		}.start();
 	}
 
 	private void setStatus(boolean isCooling) {
@@ -103,6 +112,7 @@ public class OvenControllerScreen extends JFrame {
 					}
 				}
 				timer.cancel();
+				isRunning = false;
 			}
 		};
 		timer.schedule(task, 0);
