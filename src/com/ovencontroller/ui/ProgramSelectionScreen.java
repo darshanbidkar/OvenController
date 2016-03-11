@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -30,8 +32,9 @@ public class ProgramSelectionScreen extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private ArrayList<ProgramSettings> settings;
-	JLabel lblProgramSelection;
-	JScrollPane scrollPane;
+	private JLabel lblProgramSelection;
+	private JScrollPane scrollPane;
+	private ProgramSettings currentSetting;
 
 	public ProgramSelectionScreen() {
 		setSize(500, 345);
@@ -62,6 +65,12 @@ public class ProgramSelectionScreen extends JFrame {
 		getContentPane().add(btnAddNew);
 
 		JButton btnStart = new JButton("Start");
+		btnStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new OvenControllerScreen(currentSetting);
+			}
+		});
 		btnStart.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		btnStart.setBounds(187, 275, 139, 34);
 		getContentPane().add(btnStart);
@@ -84,13 +93,20 @@ public class ProgramSelectionScreen extends JFrame {
 		BoxLayout boxLayout = new BoxLayout(jp, BoxLayout.Y_AXIS);
 		jp.setLayout(boxLayout);
 		// TODO change code.
-		for(ProgramSettings setting : settings) {
-		    radioButton = new JRadioButton();
-            radioButton.setText(setting.getName() + ", " + setting.getTotalTime());
-            radioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
-            radioGroup.add(radioButton);
+		for (ProgramSettings setting : settings) {
+			radioButton = new JRadioButton();
+			radioButton.setText(setting.getName() + ", "
+					+ setting.getTotalTime());
+			radioButton.setLayout(new FlowLayout(FlowLayout.LEFT));
+			radioGroup.add(radioButton);
+			radioButton.addItemListener(new ItemListener() {
 
-            jp.add(radioButton);
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					currentSetting = setting;
+				}
+			});
+			jp.add(radioButton);
 		}
 
 		scrollPane = new JScrollPane(jp);
