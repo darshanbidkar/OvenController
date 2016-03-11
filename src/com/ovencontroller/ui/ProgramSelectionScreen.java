@@ -57,7 +57,7 @@ public class ProgramSelectionScreen extends JFrame {
 		btnAddNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new NewSetting();
+				new NewSetting(null);
 			}
 		});
 		btnAddNew.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
@@ -112,5 +112,15 @@ public class ProgramSelectionScreen extends JFrame {
 		scrollPane = new JScrollPane(jp);
 		scrollPane.setBounds(16, 130, 465, 122);
 		getContentPane().add(scrollPane);
+		
+		JButton btnNewButton = new JButton("Edit");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new NewSetting(currentSetting);
+			}
+		});
+		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		btnNewButton.setBounds(53, 275, 117, 34);
+		getContentPane().add(btnNewButton);
 	}
 }
