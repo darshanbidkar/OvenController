@@ -71,4 +71,18 @@ public class ProgramSettings {
 		this.totalTime = totalTime;
 	}
 
+	@Override
+	public String toString() {
+	    StringBuilder builder = new StringBuilder();
+	    builder.append("\n").append(name).append("\t");
+	    for(ProgramModel model : models) {
+	        builder.append(model.getStartTemp())
+	               .append(",")
+	               .append(model.getEndTemp())
+	               .append(",")
+	               .append(model.getDuration())
+	               .append("\t");
+	    }
+	    return builder.toString();
+	}
 }

@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import com.ovencontroller.model.ProgramSettings;
-import com.ovencontroller.utils.InputReader;
+import com.ovencontroller.utils.RecordsHandler;
 
 /**
  * @author darshanbidkar
@@ -82,7 +82,7 @@ public class ProgramSelectionScreen extends JFrame {
 	}
 
 	private ArrayList<ProgramSettings> getPrograms() {
-		ArrayList<ProgramSettings> settings = InputReader.getSavedSettings();
+		ArrayList<ProgramSettings> settings = RecordsHandler.getSavedSettings();
 		return settings;
 	}
 

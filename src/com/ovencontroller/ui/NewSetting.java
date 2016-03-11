@@ -3,10 +3,12 @@
  */
 package com.ovencontroller.ui;
 
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,6 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import com.ovencontroller.model.ProgramModel;
+import com.ovencontroller.model.ProgramSettings;
+import com.ovencontroller.utils.RecordsHandler;
 
 /**
  * @author darshanbidkar
@@ -62,7 +68,8 @@ public class NewSetting extends JFrame {
 		JButton btnNewButton = new JButton("Save");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// File write TODO
+			    ProgramSettings setting = createProgramSettings();
+			    RecordsHandler.addProgramSettings(setting);
 				dispose();
 				new ProgramSelectionScreen();
 			}
@@ -72,6 +79,28 @@ public class NewSetting extends JFrame {
 		getContentPane().add(btnNewButton);
 		setVisible(true);
 	}
+
+	/**
+	 * Extracts the contents from dynamically added text fields to get the user input.
+	 * It is then passed to the handler to save it in the file.
+	 * @return ProgramSettings object
+	 */
+	private ProgramSettings createProgramSettings() {
+	    String settingName = textField.getText();
+	    ArrayList<ProgramModel> models = new ArrayList<>();
+	    Component[] innerPanels = jPanel.getComponents();
+	    for(Component component : innerPanels) {
+	        JPanel panel = (JPanel) component;
+	        JTextField field0 = (JTextField) panel.getComponent(0);
+	        JTextField field1 = (JTextField) panel.getComponent(1);
+	        JTextField field2 = (JTextField) panel.getComponent(2);
+	        int startTemperature = Integer.parseInt(field0.getText());
+	        int endTemperature = Integer.parseInt(field1.getText());
+	        int durationTime = Integer.parseInt(field2.getText());
+	        models.add(new ProgramModel(startTemperature, endTemperature, durationTime));
+	    }
+        return new ProgramSettings(settingName, models);
+    }
 
 	private void addNewEntry() {
 		SettingEntry entry = new SettingEntry();
