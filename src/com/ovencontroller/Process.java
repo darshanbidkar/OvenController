@@ -66,6 +66,10 @@ public class Process {
 	public int getCurrentTemp() {
 		return (int) currentTemp;
 	}
+	
+	public void stopProcess() {
+		duration = 0;
+	}
 
 	public static void main(String[] args) {
 		new Process(900, 890, 100).startProcess();

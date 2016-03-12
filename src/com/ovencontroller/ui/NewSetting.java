@@ -29,7 +29,7 @@ import com.ovencontroller.utils.RecordsHandler;
 public class NewSetting extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
+	private JTextField nameTextField;
 	private JScrollPane scrollPane;
 	private JPanel jPanel;
 
@@ -42,11 +42,11 @@ public class NewSetting extends JFrame {
 		lblSettingName.setBounds(18, 17, 136, 27);
 		getContentPane().add(lblSettingName);
 
-		textField = new JTextField();
-		textField.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-		textField.setBounds(147, 18, 134, 28);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		nameTextField = new JTextField();
+		nameTextField.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+		nameTextField.setBounds(147, 18, 134, 28);
+		getContentPane().add(nameTextField);
+		nameTextField.setColumns(10);
 
 		jPanel = new JPanel();
 		jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
@@ -77,19 +77,35 @@ public class NewSetting extends JFrame {
 		btnNewButton.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		btnNewButton.setBounds(421, 280, 133, 45);
 		getContentPane().add(btnNewButton);
-		
+
 		JLabel lblStartTemperature = new JLabel("Start Temperature");
 		lblStartTemperature.setBounds(28, 67, 136, 22);
 		getContentPane().add(lblStartTemperature);
-		
+
 		JLabel lblNewLabel = new JLabel("End Temperature");
 		lblNewLabel.setBounds(176, 68, 136, 20);
 		getContentPane().add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Time");
-		lblNewLabel_1.setBounds(324, 67, 61, 22);
-		getContentPane().add(lblNewLabel_1);
+
+		JLabel lblTimeLabel = new JLabel("Time");
+		lblTimeLabel.setBounds(324, 67, 61, 22);
+		getContentPane().add(lblTimeLabel);
+
+		if (currentSetting != null) {
+			populate(currentSetting);
+		}
+
 		setVisible(true);
+	}
+
+	private void populate(ProgramSettings currentSettings) {
+		nameTextField.setText(currentSettings.getName());
+		for (ProgramModel model : currentSettings.getModels()) {
+			SettingEntry entry = new SettingEntry();
+			entry.setDuration(model.getDuration());
+			entry.setEndTemp(model.getEndTemp());
+			entry.setStartTemp(model.getStartTemp());
+			jPanel.add(entry.getJp());
+		}
 	}
 
 	/**
@@ -99,7 +115,7 @@ public class NewSetting extends JFrame {
 	 * @return ProgramSettings object
 	 */
 	private ProgramSettings createProgramSettings() {
-		String settingName = textField.getText();
+		String settingName = nameTextField.getText();
 		ArrayList<ProgramModel> models = new ArrayList<>();
 		Component[] innerPanels = jPanel.getComponents();
 		for (Component component : innerPanels) {
@@ -158,6 +174,18 @@ public class NewSetting extends JFrame {
 			jp.add(endTemp);
 			jp.add(duration);
 			jp.add(remove);
+		}
+
+		public void setStartTemp(int temp) {
+			startTemp.setText(temp + "");
+		}
+
+		public void setEndTemp(int temp) {
+			endTemp.setText(temp + "");
+		}
+
+		public void setDuration(long time) {
+			duration.setText(time + "");
 		}
 
 		/**
