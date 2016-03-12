@@ -3,6 +3,13 @@ package com.ovencontroller;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Process class that is the heart of the program. Deals with various operations
+ * such as: turn on turn off get current temp
+ * 
+ * @author darshanbidkar
+ *
+ */
 public class Process {
 
 	private double currentTemp;
@@ -23,7 +30,8 @@ public class Process {
 		idealRate = (endTemp - currentTemp) / duration;
 	}
 
-	public void startProcess() {
+	// turns on the oven.
+	public void turnOnOven() {
 
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {
@@ -47,6 +55,7 @@ public class Process {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					// timer tick.
 					duration -= 1;
 				}
 				timer.cancel();
@@ -55,6 +64,7 @@ public class Process {
 		timer.schedule(task, 0);
 	}
 
+	// returns time.
 	public long getTime() {
 		return duration * 1000;
 	}
@@ -63,15 +73,13 @@ public class Process {
 		return isCooling;
 	}
 
+	// Returns current temperature.
 	public int getCurrentTemp() {
 		return (int) currentTemp;
 	}
-	
-	public void stopProcess() {
-		duration = 0;
-	}
 
-	public static void main(String[] args) {
-		new Process(900, 890, 100).startProcess();
+	// turns off the oven.
+	public void turnOffOven() {
+		duration = 0;
 	}
 }

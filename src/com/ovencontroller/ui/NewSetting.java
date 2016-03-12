@@ -23,6 +23,8 @@ import com.ovencontroller.model.ProgramSettings;
 import com.ovencontroller.utils.RecordsHandler;
 
 /**
+ * Handles UI for new setting cycle by the user.
+ * 
  * @author darshanbidkar
  *
  */
@@ -69,7 +71,11 @@ public class NewSetting extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProgramSettings setting = createProgramSettings();
-				RecordsHandler.addProgramSettings(setting);
+				if (currentSetting != null) {
+					RecordsHandler.updateProgramSettings(setting);
+				} else {
+					RecordsHandler.addProgramSettings(setting);
+				}
 				dispose();
 				new ProgramSelectionScreen();
 			}
@@ -86,8 +92,8 @@ public class NewSetting extends JFrame {
 		lblNewLabel.setBounds(176, 68, 136, 20);
 		getContentPane().add(lblNewLabel);
 
-		JLabel lblTimeLabel = new JLabel("Time");
-		lblTimeLabel.setBounds(324, 67, 61, 22);
+		JLabel lblTimeLabel = new JLabel("Time (in minutes)");
+		lblTimeLabel.setBounds(324, 67, 110, 22);
 		getContentPane().add(lblTimeLabel);
 
 		if (currentSetting != null) {
@@ -97,8 +103,10 @@ public class NewSetting extends JFrame {
 		setVisible(true);
 	}
 
+	// Populates pre filled data to the controls in case of edit scenario.
 	private void populate(ProgramSettings currentSettings) {
 		nameTextField.setText(currentSettings.getName());
+		nameTextField.setEditable(false);
 		for (ProgramModel model : currentSettings.getModels()) {
 			SettingEntry entry = new SettingEntry();
 			entry.setDuration(model.getDuration());
@@ -132,12 +140,14 @@ public class NewSetting extends JFrame {
 		return new ProgramSettings(settingName, models);
 	}
 
+	// Adds new entry to the scroll pane.
 	private void addNewEntry() {
 		SettingEntry entry = new SettingEntry();
 		jPanel.add(entry.getJp());
 		scrollPane.revalidate();
 	}
 
+	// Removes entry from scrollpane.
 	private void removeEntry(JPanel jp) {
 		if (jPanel.getComponents().length == 1) {
 			jPanel = new JPanel();
@@ -149,6 +159,7 @@ public class NewSetting extends JFrame {
 		jPanel.revalidate();
 	}
 
+	// SettingEntry class is a dummy UI class that acts as a placeholder.
 	private class SettingEntry {
 		JPanel jp;
 		JTextField startTemp, endTemp, duration;

@@ -81,11 +81,13 @@ public class ProgramSelectionScreen extends JFrame {
 		setVisible(true);
 	}
 
+	// Retrieves all programs from RecordsHandler.
 	private ArrayList<ProgramSettings> getPrograms() {
 		ArrayList<ProgramSettings> settings = RecordsHandler.getSavedSettings();
 		return settings;
 	}
 
+	// Sets radio buttons for an entry to be put to the UI.
 	private void setRadioButtons() {
 		ButtonGroup radioGroup = new ButtonGroup();
 		JRadioButton radioButton;

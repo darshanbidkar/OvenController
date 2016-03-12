@@ -2,6 +2,7 @@ package com.ovencontroller.model;
 
 import java.util.ArrayList;
 
+// Handles various program settings. A model class for storing data.
 public class ProgramSettings {
 
 	private ArrayList<ProgramModel> models;

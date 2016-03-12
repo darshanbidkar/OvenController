@@ -4,6 +4,7 @@
 package com.ovencontroller.model;
 
 /**
+ * A program model class with various placeholder entries.
  * @author darshanbidkar
  *
  */
